@@ -16,10 +16,6 @@ interface RetrofitApi {
 
     @FormUrlEncoded
     @POST("weapi/login/cellphone")
-    fun loginByPhone(@Field("phone") phone: String, @Field("password") password: String, @Field("rememberLogin") rememberLogin: Boolean): Observable<ResponseBody>
+    fun loginByPhone(@Field("params") params: String, @Field("encSecKey") encSecKey: String): Observable<ResponseBody>
 
-
-    @Headers("Content-Type: application/json", "Accept: application/json")//需要添加头
-    @POST("weapi/login/cellphone")
-    fun loginByPhone(@Body info: RequestBody): Observable<ResponseBody>    // 请求体味RequestBody 类型
 }

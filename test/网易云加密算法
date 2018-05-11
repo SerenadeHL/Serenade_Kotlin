@@ -1,0 +1,72 @@
+
+
+modulus = ('00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7'
+           'b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280'
+           '104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932'
+           '575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b'
+           '3ece0462db0a22b8e7')
+nonce = '0CoJUm6Qyw8W8jud'
+pubKey = '010001'
+
+
+    # 登录
+    def login(self, username, password):
+    pattern = re.compile(r'^0\d{2,3}\d{7,8}$|^1[34578]\d{9}$')
+        if pattern.match(username):
+            return self.phone_login(username, password)
+        action = 'https://music.163.com/weapi/login?csrf_token='
+        self.session.cookies.load()
+        text = {
+            'username': username,
+            'password': password,
+            'rememberLogin': 'true'
+        }
+        data = encrypted_request(text)
+        try:
+            return self.httpRequest('Login_POST', action, data)
+        except requests.exceptions.RequestException as e:
+            log.error(e)
+            return {'code': 501}
+
+    # 手机登录
+    def phone_login(self, username, password):
+        action = 'https://music.163.com/weapi/login/cellphone'
+        text = {
+            'phone': username,
+            'password': password,
+            'rememberLogin': 'true'
+        }
+        data = encrypted_request(text)
+        try:
+            return self.httpRequest('Login_POST', action, data)
+        except requests.exceptions.RequestException as e:
+            log.error(e)
+    return {'code': 501}
+
+# 登录加密算法, 基于https://github.com/stkevintan/nw_musicbox脚本实现
+def encrypted_request(text):
+    text = json.dumps(text) 把python text转换为json字符串
+    secKey = createSecretKey(16)
+    encText = aesEncrypt(aesEncrypt(text, nonce), secKey)   nonce固定值
+    encSecKey = rsaEncrypt(secKey, pubKey, modulus)
+    data = {'params': encText, 'encSecKey': encSecKey}
+    return data
+
+
+def aesEncrypt(text, secKey):
+    pad = 16 - len(text) % 16   len()取长度
+    text = text + chr(pad) * pad    chr()返回ascii码对于的字符
+    encryptor = AES.new(secKey, 2, '0102030405060708')
+    ciphertext = encryptor.encrypt(text)
+    ciphertext = base64.b64encode(ciphertext).decode('utf-8')
+    return ciphertext
+
+
+def rsaEncrypt(text, pubKey, modulus):
+    text = text[::-1]   [::-1]倒序输出
+    rs = pow(int(binascii.hexlify(text), 16), int(pubKey, 16), int(modulus, 16))    int(x,y)将y进制的x转化为10进制   pow(x,y,z)=pow(x,y)%z 返回x的y次方并对z取余
+    return format(rs, 'x').zfill(256)  format(rs, 'x')把rs转16进制 zfill() 方法返回指定长度的字符串，原字符串右对齐，前面填充0。
+
+
+def createSecretKey(size):
+return binascii.hexlify(os.urandom(size))[:16]  //返回字符串的16进制编码  os.urandom(n)生成n位随机数 [:16]截取前16位
