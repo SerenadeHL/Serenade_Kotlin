@@ -11,92 +11,100 @@ import java.security.SecureRandom
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
+import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import kotlin.experimental.xor
 
 object Request {
     val modulus = "00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7"
     val nonce = "0CoJUm6Qyw8W8jud"
     val pubKey = "010001"
-
-    fun encrypted_request(text: String): String {
-        val secKey = createSecretKey(16)
-        val encText = aesEncrypt(aesEncrypt(text, nonce), secKey)
-        val encSecKey = rsaEncrypt(secKey, pubKey, modulus)
-        return "{'params':'$encText', 'encSecKey':'$encSecKey'}"
-    }
-
-    fun aesEncrypt(text: String, secKey: String): String {
-        val pad = 16 - text.length % 16
-        val tt = text + Integer.valueOf(pad) * pad
-        return String(Base64.encode(encrypt(tt, secKey), Base64.NO_WRAP), Charset.forName("utf-8"))
-    }
-
-    fun rsaEncrypt(text: String, pubKey: String, modulus: String): String {
-        val reverse = text.reversed()
-        L.e("a==" + stringTo16(reverse))
-//        val a = stringTo16(reverse).toLong(16).toDouble()
-        val a = BigInteger(stringTo16(reverse), 16).toDouble()
-        L.e("b==$pubKey")
-//        val b = pubKey.toLong(16).toDouble()
-        val b = BigInteger(pubKey, 16).toDouble()
-//        val c = modulus.forEach { it.toLong(16) }
-        val c = BigInteger(modulus, 16).toDouble()
-
-        val rs = Math.pow(a, b) % c
-        return Integer.toHexString(rs.toInt()).format("%0256d")
-    }
-
-    fun createSecretKey(size: Int): String {
-        val str = StringBuilder()//定义变长字符串
-        val random = Random()
-        //随机生成数字，并添加到字符串
-        for (i in 0..size) {
-            str.append(random.nextInt(10))
-        }
-        return stringTo16(str.toString()).substring(0, 17)
-    }
-
-    fun stringTo16(s: String): String {
-        var str = ""
-        for (i in 0 until s.length) {
-            val ch = Integer.parseInt(s[i].toString())
-            val s4 = Integer.toHexString(ch)
-            str += s4
-        }
-        return str
-    }
-
     /**
-     * 加密
+     * AES/CBC/NoPadding加密
      *
      * @param content  需要加密的内容
      * @param password 加密密码
      * @return
      */
-    fun encrypt(content: String, password: String): ByteArray {
-        var kgen: KeyGenerator? = null
-        try {
-            kgen = KeyGenerator.getInstance("AES")
-            kgen!!.init(128, SecureRandom("0102030405060708".toByteArray()))
-            val secretKey = kgen!!.generateKey()
-            val enCodeFormat = secretKey.getEncoded()
-            val key = SecretKeySpec(enCodeFormat, "AES")
-            val cipher = Cipher.getInstance("AES")// 创建密码器
-            cipher.init(Cipher.DECRYPT_MODE, key)// 初始化
-            val byteContent = content.toByteArray(charset("utf-8"))
-            return cipher.doFinal(byteContent)//加密
-        } catch (e: Exception) {
-            e.printStackTrace()
+    fun encrypt(src: String, key: String): ByteArray {
+        val cipher = Cipher.getInstance("AES/CBC/NoPadding")
+        val blockSize = cipher.blockSize
+        val dataBytes = src.toByteArray()
+        var plaintextLength = dataBytes.size
+        if (plaintextLength % blockSize != 0) {
+            plaintextLength += (blockSize - plaintextLength % blockSize)
         }
-        return byteArrayOf()
+        val plaintext = ByteArray(plaintextLength)
+        System.arraycopy(dataBytes, 0, plaintext, 0, dataBytes.size)
+        val keyspec = SecretKeySpec(key.toByteArray(), "AES")
+        val ivspec = IvParameterSpec("0102030405060708".toByteArray())
+        cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec)
+        val encrypted = cipher.doFinal(plaintext)
+        return encrypted
     }
 
     /**
-     * 登录接口密码需要做MD5加密
+     * 把字符串的每个字符转换成16进制ASCII码
      */
-    fun loginByPhone(phone: String, password: String): Observable<ResponseBody> {
-        val text = "{'phone':'$phone','password','${password.md5()}','rememberLogin': 'true'}"
-
-        return RetrofitHelper.api.loginByPhone(phone, password)
+    fun hexlify(src: String): String {
+        val sb = StringBuilder()
+        for (a in src)
+            sb.append(Integer.toHexString(a.toInt()))
+        return sb.toString()
     }
+
+    fun aesEncrypt(text: String, secKey: String): String {
+        val pad = 16 - text.length % 16
+        val chr = pad.toChar()//余数作为ASCII码转换成对应字符
+        val sb = StringBuilder(text)
+        for (i in 0 until pad)
+            sb.append(chr)//拼接余数个字符
+        return Base64.encodeToString(encrypt(sb.toString(), secKey), Base64.NO_WRAP)
+    }
+
+    /**
+     * 随机生成16位16进制字符串
+     */
+    fun createSecretKey(size: Int): String {
+        val result = StringBuilder()
+        val radom = Random()
+        for (i in 0 until size) {
+            result.append(Integer.toHexString(radom.nextInt(16)))
+        }
+        return result.toString()
+    }
+
+    fun rsaEncrypt(text: String, pubKey: String, modulus: String): String {
+        val reverse = text.reversed()
+        val a = BigInteger(hexlify(reverse), 16)
+        val b = BigInteger(pubKey, 16)
+        val c = BigInteger(modulus, 16)
+        val rs = a.modPow(b, c)//a的b次方%c
+        return rs.toString(16).format("%0256d")
+    }
+
+    /**
+     * 加密歌曲id
+     */
+    fun encrypted_id(id: String): String {
+        val magic = "3go8&$8*3*3h0k(2)2".toByteArray(Charset.forName("utf-8"))
+        val song_id = id.toByteArray(Charset.forName("utf-8"))
+        val magic_len = magic.size
+        for ((i, sid) in song_id.withIndex()) {
+            song_id[i] = sid xor magic[i % magic_len]
+        }
+        var result = Base64.encodeToString(song_id.md5(), Base64.NO_WRAP)
+        return result.replace("/", "_").replace("+", "-")
+    }
+
+
+
+    fun loginByPhone(phone: String, password: String): Observable<ResponseBody> {
+        val json = """{"phone": "$phone", "password": "${password.md5()}", "rememberLogin": "true"}"""
+        val secKey = createSecretKey(16)
+        val encText = aesEncrypt(aesEncrypt(json, nonce), secKey)
+        val encSecKey = rsaEncrypt(secKey, pubKey, modulus)
+        return RetrofitHelper.api.loginByPhone(encText, encSecKey)
+    }
+
 }

@@ -42,7 +42,7 @@ abstract class BaseObserver<T> : Observer<BaseResponse<T>> {
     }
 
     override fun onNext(t: BaseResponse<T>) {
-        next(t.data)
+        next(t.result)
     }
 
     abstract fun next(@NonNull data: T)
