@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.support.v4.app.Fragment as SupportFragment
 import android.app.Fragment as AppFragment
 import android.widget.Toast
+import me.serenadehl.serenade_kotlin.BuildConfig
 
 /**
  *
@@ -41,4 +43,11 @@ fun Activity.setNavigationBarColor(color: Int) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         window.navigationBarColor = color
     }
+}
+
+/**
+ * log
+ */
+fun Any.log() {
+    if (BuildConfig.DEBUG) Log.e("=========", toString())
 }

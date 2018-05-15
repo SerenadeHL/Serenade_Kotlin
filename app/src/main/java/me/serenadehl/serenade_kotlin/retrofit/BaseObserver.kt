@@ -7,9 +7,9 @@ import java.net.UnknownHostException
 import io.reactivex.Observer
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
+import me.serenadehl.serenade_kotlin.extensions.log
 import me.serenadehl.serenade_kotlin.extensions.toast
 import me.serenadehl.serenade_kotlin.utils.app.AppManager
-import me.serenadehl.serenade_kotlin.utils.log.L
 
 /**
  * 作者：Serenade
@@ -27,7 +27,7 @@ abstract class BaseObserver<T> : Observer<BaseResponse<T>> {
             is ConnectException -> AppManager.instance.currentActivity.toast("网络中断，请检查您的网络状态！")
             is UnknownHostException -> AppManager.instance.currentActivity.toast("网络错误，请检查您的网络状态！")
             else -> {
-                L.e("-----RxJava-----", "error----------->" + e.toString())
+                "-----RxJava-----error----------->".log()
             }
         }
         error(e)

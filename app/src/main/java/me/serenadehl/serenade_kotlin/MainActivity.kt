@@ -2,9 +2,9 @@ package me.serenadehl.serenade_kotlin
 
 import me.serenadehl.serenade_kotlin.base.BaseActivity
 import me.serenadehl.serenade_kotlin.extensions.async
+import me.serenadehl.serenade_kotlin.extensions.log
 import me.serenadehl.serenade_kotlin.retrofit.BaseObserverWithoutBaseResponse
 import me.serenadehl.serenade_kotlin.retrofit.Request
-import me.serenadehl.serenade_kotlin.utils.log.L
 import okhttp3.ResponseBody
 
 class MainActivity : BaseActivity() {
@@ -15,7 +15,7 @@ class MainActivity : BaseActivity() {
                 .async()
                 .subscribe(object : BaseObserverWithoutBaseResponse<ResponseBody>() {
                     override fun next(data: ResponseBody) {
-                        L.e(data.string())
+                        data.string().log()
                     }
                 })
     }

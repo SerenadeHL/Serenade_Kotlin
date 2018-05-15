@@ -3,7 +3,6 @@ package me.serenadehl.serenade_kotlin.retrofit
 import android.util.Base64
 import io.reactivex.Observable
 import me.serenadehl.serenade_kotlin.extensions.md5
-import me.serenadehl.serenade_kotlin.utils.log.L
 import okhttp3.ResponseBody
 import java.math.BigInteger
 import java.nio.charset.Charset
