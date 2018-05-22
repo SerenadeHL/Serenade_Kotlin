@@ -1,9 +1,9 @@
-package me.serenadehl.shellaccount.utils.sharedpre
+package me.serenadehl.serenade_kotlin.utils.sharedpre
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import me.serenadehl.shellaccount.utils.app.AppManager
+import me.serenadehl.serenade_kotlin.utils.app.AppManager
 
 /**
  * 作者：Serenade
@@ -11,7 +11,7 @@ import me.serenadehl.shellaccount.utils.app.AppManager
  * 创建时间：2018-02-15 00:50:35
  */
 object SPUtil {
-    private val SP_NAME = "Serenade"
+    private const val SP_NAME = "Serenade"
     private val mSharedPreferences: SharedPreferences by lazy {
         AppManager.instance
                 .currentActivity

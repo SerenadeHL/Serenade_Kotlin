@@ -1,4 +1,4 @@
-package me.serenadehl.shellaccount.extensions
+package me.serenadehl.serenade_kotlin.extensions
 
 import android.app.Activity
 import android.content.Context
@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import me.serenadehl.shellaccount.BuildConfig
-import me.serenadehl.shellaccount.utils.sharedpre.SPUtil
+import me.serenadehl.serenade_kotlin.BuildConfig
+import me.serenadehl.serenade_kotlin.utils.sharedpre.SPUtil
 import android.app.Fragment as AppFragment
 import android.support.v4.app.Fragment as SupportFragment
 

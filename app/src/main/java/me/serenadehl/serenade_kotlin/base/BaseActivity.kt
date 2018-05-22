@@ -1,4 +1,4 @@
-package me.serenadehl.shellaccount.base
+package me.serenadehl.serenade_kotlin.base
 
 import android.graphics.Color
 import android.os.Build

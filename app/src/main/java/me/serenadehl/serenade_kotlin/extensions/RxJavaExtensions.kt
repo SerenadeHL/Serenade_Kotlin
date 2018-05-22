@@ -1,4 +1,4 @@
-package me.serenadehl.shellaccount.extensions
+package me.serenadehl.serenade_kotlin.extensions
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

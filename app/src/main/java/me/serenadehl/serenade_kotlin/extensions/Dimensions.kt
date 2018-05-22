@@ -1,4 +1,4 @@
-package me.serenadehl.shellaccount.extensions
+package me.serenadehl.serenade_kotlin.extensions
 
 import android.app.Fragment
 import android.content.Context

@@ -1,4 +1,4 @@
-package me.serenadehl.shellaccount.utils.app
+package me.serenadehl.serenade_kotlin.utils.app
 
 import android.app.Activity
 import android.content.Intent
