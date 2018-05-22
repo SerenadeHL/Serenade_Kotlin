@@ -1,8 +1,9 @@
-package me.serenadehl.serenade_kotlin.utils.app
+package me.serenadehl.shellaccount.utils.app
 
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import me.serenadehl.shellaccount.utils.app.AppManager
 
 /**
  * 作者：Serenade

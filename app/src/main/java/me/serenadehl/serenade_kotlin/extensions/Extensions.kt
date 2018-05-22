@@ -1,15 +1,16 @@
-package me.serenadehl.serenade_kotlin.extensions
+package me.serenadehl.shellaccount.extensions
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import android.util.Log
-import android.support.v4.app.Fragment as SupportFragment
-import android.app.Fragment as AppFragment
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import me.serenadehl.serenade_kotlin.BuildConfig
+import me.serenadehl.shellaccount.BuildConfig
+import me.serenadehl.shellaccount.utils.sharedpre.SPUtil
+import android.app.Fragment as AppFragment
+import android.support.v4.app.Fragment as SupportFragment
 
 /**
  *
@@ -21,25 +22,45 @@ import me.serenadehl.serenade_kotlin.BuildConfig
 /**
  * Toast
  */
-fun Context.toast(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+inline fun Context.toast(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
 
-fun SupportFragment.toast(msg: String) = Toast.makeText(activity?.applicationContext, msg, Toast.LENGTH_SHORT).show()
+inline fun SupportFragment.toast(msg: String) = Toast.makeText(activity?.applicationContext, msg, Toast.LENGTH_SHORT).show()
 
-fun AppFragment.toast(msg: String) = Toast.makeText(activity?.applicationContext, msg, Toast.LENGTH_SHORT).show()
+inline fun AppFragment.toast(msg: String) = Toast.makeText(activity?.applicationContext, msg, Toast.LENGTH_SHORT).show()
 
 /**
- * 跳转
+ * 隐藏输入法
+ *
+ * @param view
  */
-fun Context.startActivity(activity: Class<out Activity>, bundle: Bundle? = null) = startActivity(Intent(this, activity).apply { putExtras(bundle) })
+inline fun Context.hideKeyboard(view: View) {
+    val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
 
-fun SupportFragment.startActivity(activity: Class<out Activity>, bundle: Bundle? = null) = startActivity(Intent(getActivity(), activity).apply { putExtras(bundle) })
+/**
+ * 显示输入法
+ *
+ * @param view
+ */
+inline fun Context.showKeyboard(view: View) {
+    val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(view, 0)
+}
 
-fun AppFragment.startActivity(activity: Class<out Activity>, bundle: Bundle? = null) = startActivity(Intent(getActivity(), activity).apply { putExtras(bundle) })
+inline fun SupportFragment.hideKeyboard(view: View) = activity?.hideKeyboard(view)
+
+inline fun SupportFragment.showKeyboard(view: View) = activity?.showKeyboard(view)
+
+inline fun AppFragment.hideKeyboard(view: View) = activity?.hideKeyboard(view)
+
+inline fun AppFragment.showKeyboard(view: View) = activity?.showKeyboard(view)
+
 
 /**
  * 设置虚拟按键颜色
  */
-fun Activity.setNavigationBarColor(color: Int) {
+inline fun Activity.setNavigationBarColor(color: Int) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         window.navigationBarColor = color
     }
@@ -48,6 +69,11 @@ fun Activity.setNavigationBarColor(color: Int) {
 /**
  * log
  */
-fun Any.log() {
+inline fun Any.log() {
     if (BuildConfig.DEBUG) Log.e("=========", toString())
 }
+
+/**
+ * 保存到SP
+ */
+inline fun <T> T.saveToSP(key: String) = apply { SPUtil.putString(key, toString()) }

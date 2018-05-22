@@ -1,9 +1,9 @@
-package me.serenadehl.serenade_kotlin.utils.sharedpre
+package me.serenadehl.shellaccount.utils.sharedpre
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import me.serenadehl.serenade_kotlin.utils.app.AppManager
+import me.serenadehl.shellaccount.utils.app.AppManager
 
 /**
  * 作者：Serenade
@@ -66,5 +66,5 @@ object SPUtil {
 
     fun putArrayList(key: String, value: ArrayList<out Any>) = putString(key, Gson().toJson(value))
 
-    fun <T> getArrayList(key: String) = Gson().fromJson(mSharedPreferences.getString(key,"[]"), ArrayList::class.java) as ArrayList<T>
+    fun <T> getArrayList(key: String) = Gson().fromJson(mSharedPreferences.getString(key, "[]"), ArrayList::class.java) as ArrayList<*>
 }

@@ -1,8 +1,8 @@
-package me.serenadehl.serenade_kotlin.extensions
+package me.serenadehl.shellaccount.extensions
 
 import java.security.MessageDigest
 
-fun String.md5(): String {
+inline fun String.md5(): String {
     try {
         // Create MD5 Hash
         val digest = MessageDigest.getInstance("MD5")
@@ -17,7 +17,7 @@ fun String.md5(): String {
     }
 }
 
-fun ByteArray.md5(): ByteArray {
+inline fun ByteArray.md5(): ByteArray {
     try {
         val md = MessageDigest.getInstance("MD5")
         return md.digest(this)

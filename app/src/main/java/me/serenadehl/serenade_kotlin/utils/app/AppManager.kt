@@ -1,8 +1,8 @@
-package me.serenadehl.serenade_kotlin.utils.app
+package me.serenadehl.shellaccount.utils.app
 
 import android.app.Activity
 import android.content.Intent
-import java.util.Stack
+import java.util.*
 
 /**
  * 作者：Serenade
@@ -52,7 +52,7 @@ class AppManager private constructor() {
     fun finishActivity(cls: Class<out Activity>) {
         activities
                 .filter { cls.name == it.javaClass.name }
-                .forEach { (it as Activity).finish() }
+                .forEach { it.finish() }
     }
 
     /**
@@ -66,7 +66,7 @@ class AppManager private constructor() {
      * 结束所有Activity
      */
     fun finishAllActivity() {
-        activities.forEach { (it as Activity).finish() }
+        activities.forEach { it.finish() }
         activities.clear()
     }
 
@@ -86,17 +86,6 @@ class AppManager private constructor() {
         val intent = activity.baseContext.packageManager.getLaunchIntentForPackage(activity.baseContext.packageName)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         activity.startActivity(intent)
-        //activity.finish();
         System.exit(0)
-    }
-
-    /**
-     * 获取指定Activity
-     */
-    fun <T> getActivity(cls: Class<out Activity>): T? {
-        activities
-                .filter { cls.name == it.javaClass.name }
-                .forEach { return it as T }
-        return null
     }
 }

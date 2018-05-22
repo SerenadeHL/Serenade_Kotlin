@@ -1,4 +1,4 @@
-package me.serenadehl.serenade_kotlin.extensions
+package me.serenadehl.shellaccount.extensions
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * RxJava2线程切换
  */
-fun <T> Observable<T>.async(): Observable<T> {
+inline fun <T> Observable<T>.async(): Observable<T> {
     return subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

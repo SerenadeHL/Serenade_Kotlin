@@ -1,4 +1,4 @@
-package me.serenadehl.serenade_kotlin.base
+package me.serenadehl.shellaccount.base
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

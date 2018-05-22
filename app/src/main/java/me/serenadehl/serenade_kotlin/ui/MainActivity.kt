@@ -1,5 +1,6 @@
-package me.serenadehl.serenade_kotlin
+package me.serenadehl.serenade_kotlin.ui
 
+import me.serenadehl.serenade_kotlin.R
 import me.serenadehl.serenade_kotlin.base.BaseActivity
 import me.serenadehl.serenade_kotlin.extensions.async
 import me.serenadehl.serenade_kotlin.extensions.log
