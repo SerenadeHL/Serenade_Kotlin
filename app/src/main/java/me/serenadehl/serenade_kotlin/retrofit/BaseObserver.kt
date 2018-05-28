@@ -27,7 +27,7 @@ abstract class BaseObserver<T> : Observer<BaseResponse<T>> {
             is ConnectException -> AppManager.instance.currentActivity.toast("网络中断，请检查您的网络状态！")
             is UnknownHostException -> AppManager.instance.currentActivity.toast("网络错误，请检查您的网络状态！")
             else -> {
-                "-----RxJava-----error----------->".log()
+                "=====RxJava=====error===========>".log()
             }
         }
         error(e)

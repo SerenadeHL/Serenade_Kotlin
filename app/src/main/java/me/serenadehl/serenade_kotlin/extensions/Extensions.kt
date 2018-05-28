@@ -1,6 +1,7 @@
 package me.serenadehl.serenade_kotlin.extensions
 
 import android.app.Activity
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.os.Build
 import android.util.Log
@@ -34,8 +35,7 @@ inline fun AppFragment.toast(msg: String) = Toast.makeText(activity?.application
  * @param view
  */
 inline fun Context.hideKeyboard(view: View) {
-    val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(view.windowToken, 0)
+    (applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 /**
@@ -44,8 +44,7 @@ inline fun Context.hideKeyboard(view: View) {
  * @param view
  */
 inline fun Context.showKeyboard(view: View) {
-    val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.showSoftInput(view, 0)
+    (applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(view, 0)
 }
 
 inline fun SupportFragment.hideKeyboard(view: View) = activity?.hideKeyboard(view)
