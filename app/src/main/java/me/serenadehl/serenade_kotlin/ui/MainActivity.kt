@@ -15,7 +15,7 @@ class MainActivity : MVPBaseActivity<MainPresenter>(), IMainView {
 
     override fun onActivityCreated() {
 //        mPresenter.loginByPhone("17600697395", "Haoliang0423")
-        Requests.sendPlayList(705123493.toString(), "testhhhh", 127677408.toString())//475625142  32953014
+        Requests.sendText("testhhhh", 127677408.toString())//475625142  32953014
                 .async()
                 .subscribe(object : BaseObserverWithoutBaseResponse<ResponseBody>() {
                     override fun next(data: ResponseBody) {

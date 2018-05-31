@@ -100,6 +100,7 @@ object Requests {
     }
 
 
+    //手机号登录
     fun loginByPhone(phone: String, password: String): Observable<ResponseBody> {
         val json = """{phone:"$phone",password:"${password.md5()}",rememberLogin:"true"}"""
         val secKey = createSecretKey(16)
@@ -109,6 +110,7 @@ object Requests {
     }
 
 
+    //私信
     fun sendText(msg: String, userIds: String): Observable<ResponseBody> {
         val json = """{type:"text",msg:"$msg",userIds:"[$userIds]",csrf_token:"${SPUtil.getString(SPConst.CSRF_TOKEN)}"}"""
         val secKey = createSecretKey(16)
@@ -117,6 +119,7 @@ object Requests {
         return RetrofitHelper.api.sendText(encText, encSecKey)
     }
 
+    //带歌单的私信(不能发送重复的歌单)
     fun sendPlayList(playListId: String, msg: String, userIds: String): Observable<ResponseBody> {
         val json = """{id:"$playListId",type:"playlist",msg:"$msg",userIds:"[$userIds]",csrf_token:"${SPUtil.getString(SPConst.CSRF_TOKEN)}"}"""
         val secKey = createSecretKey(16)

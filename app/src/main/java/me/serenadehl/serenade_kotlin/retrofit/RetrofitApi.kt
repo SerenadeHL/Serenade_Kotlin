@@ -13,11 +13,12 @@ import retrofit2.http.*
  */
 
 interface RetrofitApi {
-
+    //手机号登录
     @FormUrlEncoded
     @POST("weapi/login/cellphone")
     fun loginByPhone(@Field("params") params: String, @Field("encSecKey") encSecKey: String): Observable<ResponseBody>
 
+    //私信
     @FormUrlEncoded
     @POST("weapi/msg/private/send")
     fun sendText(@Field("params") params: String, @Field("encSecKey") encSecKey: String): Observable<ResponseBody>
