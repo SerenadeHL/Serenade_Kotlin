@@ -5,13 +5,18 @@ import java.lang.ref.WeakReference
 
 abstract class MVPBasePresenter<V : IBaseView, M : IBaseModel> : IBasePresenter {
     lateinit var mView: WeakReference<V>
-    val mModel: M by lazy { createModel() }
+    var mModel: M
 
-    fun attach(view: V) {
-        this.mView = WeakReference(view)
+    init {
+        mModel = this.createModel()
     }
 
-    fun detach() {
+    @Suppress("UNCHECKED_CAST")
+    override fun attach(view: IBaseView) {
+        this.mView = WeakReference(view as V)
+    }
+
+    override fun detach() {
         mView.clear()
     }
 

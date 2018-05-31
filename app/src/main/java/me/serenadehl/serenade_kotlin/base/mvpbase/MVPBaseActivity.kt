@@ -3,9 +3,11 @@ package me.serenadehl.serenade_kotlin.base.mvpbase
 import android.os.Bundle
 import me.serenadehl.serenade_kotlin.base.BaseActivity
 
-abstract class MVPBaseActivity<P : MVPBasePresenter<IBaseView,IBaseModel>> : BaseActivity(), IBaseView {
-    val mPresenter: P by lazy {
-        createPresenter()
+abstract class MVPBaseActivity<P :IBasePresenter> : BaseActivity(), IBaseView {
+    val mPresenter: P
+
+    init {
+        mPresenter = this.createPresenter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

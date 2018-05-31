@@ -7,7 +7,7 @@ package me.serenadehl.serenade_kotlin.constant
  */
 
 object SongConst {
-    val HIGH = 320000
-    val MEDIUM = 192000
-    val LOW = 128000
+    const val HIGH = 320000
+    const val MEDIUM = 192000
+    const val LOW = 128000
 }

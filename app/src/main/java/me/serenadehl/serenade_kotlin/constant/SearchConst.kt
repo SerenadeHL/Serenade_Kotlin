@@ -6,11 +6,11 @@ package me.serenadehl.serenade_kotlin.constant
  * 创建时间：2018-05-05 20:18:08
  */
 object SearchConst {
-    val SONG = 1
-    val ALBUM = 10
-    val SINGER = 100
-    val PLAYLIST = 1000
-    val USER = 1002
-    val MV = 1004
-    val RADIO = 1009
+    const val SONG = 1
+    const val ALBUM = 10
+    const val SINGER = 100
+    const val PLAYLIST = 1000
+    const val USER = 1002
+    const val MV = 1004
+    const val RADIO = 1009
 }

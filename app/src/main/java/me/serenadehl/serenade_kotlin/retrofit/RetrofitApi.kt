@@ -18,4 +18,7 @@ interface RetrofitApi {
     @POST("weapi/login/cellphone")
     fun loginByPhone(@Field("params") params: String, @Field("encSecKey") encSecKey: String): Observable<ResponseBody>
 
+    @FormUrlEncoded
+    @POST("weapi/msg/private/send")
+    fun sendText(@Field("params") params: String, @Field("encSecKey") encSecKey: String): Observable<ResponseBody>
 }

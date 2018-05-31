@@ -45,7 +45,7 @@ abstract class BaseObserverWithoutBaseResponse<T> : Observer<T> {
         next(t)
     }
 
-    abstract fun next(@NonNull data: T)
+    abstract fun next( data: T)
 
     override fun onComplete() {
         complete()

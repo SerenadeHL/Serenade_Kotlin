@@ -24,8 +24,8 @@ object RetrofitHelper {
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(InterceptorUtil.HeaderInterceptor())
-                .addInterceptor(InterceptorUtil.LogInterceptor())//添加日志拦截器
+                .addInterceptor(InterceptorUtil.getHeaderInterceptor())
+                .addInterceptor(InterceptorUtil.getLogInterceptor())//添加日志拦截器
                 .build()
 
         Retrofit.Builder()

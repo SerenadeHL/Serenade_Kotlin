@@ -2,8 +2,10 @@ package me.serenadehl.serenade_kotlin.retrofit
 
 import android.util.Base64
 import io.reactivex.Observable
+import me.serenadehl.serenade_kotlin.constant.SPConst
 import me.serenadehl.serenade_kotlin.extensions.log
 import me.serenadehl.serenade_kotlin.extensions.md5
+import me.serenadehl.serenade_kotlin.utils.sharedpre.SPUtil
 import okhttp3.ResponseBody
 import java.math.BigInteger
 import java.nio.charset.Charset
@@ -98,13 +100,29 @@ object Requests {
     }
 
 
-
     fun loginByPhone(phone: String, password: String): Observable<ResponseBody> {
-        val json = """{"phone": "$phone", "password": "${password.md5()}", "rememberLogin": "true"}"""
+        val json = """{phone:"$phone",password:"${password.md5()}",rememberLogin:"true"}"""
         val secKey = createSecretKey(16)
         val encText = aesEncrypt(aesEncrypt(json, nonce), secKey)
         val encSecKey = rsaEncrypt(secKey, pubKey, modulus)
         return RetrofitHelper.api.loginByPhone(encText, encSecKey)
+    }
+
+
+    fun sendText(msg: String, userIds: String): Observable<ResponseBody> {
+        val json = """{type:"text",msg:"$msg",userIds:"[$userIds]",csrf_token:"${SPUtil.getString(SPConst.CSRF_TOKEN)}"}"""
+        val secKey = createSecretKey(16)
+        val encText = aesEncrypt(aesEncrypt(json, nonce), secKey)
+        val encSecKey = rsaEncrypt(secKey, pubKey, modulus)
+        return RetrofitHelper.api.sendText(encText, encSecKey)
+    }
+
+    fun sendPlayList(playListId: String, msg: String, userIds: String): Observable<ResponseBody> {
+        val json = """{id:"$playListId",type:"playlist",msg:"$msg",userIds:"[$userIds]",csrf_token:"${SPUtil.getString(SPConst.CSRF_TOKEN)}"}"""
+        val secKey = createSecretKey(16)
+        val encText = aesEncrypt(aesEncrypt(json, nonce), secKey)
+        val encSecKey = rsaEncrypt(secKey, pubKey, modulus)
+        return RetrofitHelper.api.sendText(encText, encSecKey)
     }
 
 }
