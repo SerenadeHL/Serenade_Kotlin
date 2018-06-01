@@ -99,7 +99,6 @@ object Requests {
         return result.replace("/", "_").replace("+", "-")
     }
 
-
     //手机号登录
     fun loginByPhone(phone: String, password: String): Observable<ResponseBody> {
         val json = """{phone:"$phone",password:"${password.md5()}",rememberLogin:"true"}"""
@@ -108,7 +107,6 @@ object Requests {
         val encSecKey = rsaEncrypt(secKey, pubKey, modulus)
         return RetrofitHelper.api.loginByPhone(encText, encSecKey)
     }
-
 
     //私信
     fun sendText(msg: String, userIds: String): Observable<ResponseBody> {

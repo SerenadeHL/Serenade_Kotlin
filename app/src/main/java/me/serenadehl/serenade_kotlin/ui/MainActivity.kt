@@ -14,13 +14,7 @@ class MainActivity : MVPBaseActivity<MainPresenter>(), IMainView {
     override fun layout() = R.layout.activity_main
 
     override fun onActivityCreated() {
-//        mPresenter.loginByPhone("17600697395", "Haoliang0423")
-        Requests.sendText("testhhhh", 127677408.toString())//475625142  32953014
-                .async()
-                .subscribe(object : BaseObserverWithoutBaseResponse<ResponseBody>() {
-                    override fun next(data: ResponseBody) {
-                        data.string().log()
-                    }
-                })
+        mPresenter.loginByPhone("17600697395", "Haoliang0423")
+
     }
 }
