@@ -2,7 +2,6 @@ package me.serenadehl.serenade_kotlin.base.mvpbase
 
 import java.lang.ref.WeakReference
 
-
 abstract class MVPBasePresenter<V : IBaseView, M : IBaseModel> : IBasePresenter {
     lateinit var mView: WeakReference<V>
     var mModel: M
