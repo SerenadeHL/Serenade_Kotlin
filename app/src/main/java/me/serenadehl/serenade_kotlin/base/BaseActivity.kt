@@ -16,7 +16,7 @@ abstract class BaseActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         mRootView = LayoutInflater.from(this).inflate(layout(), null)
         setContentView(mRootView)
-        onActivityCreated()
+        onActivityCreated(savedInstanceState)
     }
 
     /**
@@ -25,7 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     abstract fun layout(): Int
 
-    abstract fun onActivityCreated()
+    abstract fun onActivityCreated(savedInstanceState: Bundle?)
 
 
     /**

@@ -1,5 +1,6 @@
 package me.serenadehl.serenade_kotlin.ui
 
+import android.os.Bundle
 import me.serenadehl.serenade_kotlin.R
 import me.serenadehl.serenade_kotlin.base.mvpbase.*
 import me.serenadehl.serenade_kotlin.extensions.callPhone
@@ -10,8 +11,7 @@ class MainActivity : MVPBaseActivity<MainPresenter>(), IMainView {
 
     override fun layout() = R.layout.activity_main
 
-    override fun onActivityCreated() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        mPresenter.loginByPhone("17600697395", "Haoliang0423")
-        callPhone(17600697395.toString())
     }
 }
