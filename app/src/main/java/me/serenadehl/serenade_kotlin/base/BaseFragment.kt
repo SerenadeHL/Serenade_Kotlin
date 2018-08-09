@@ -16,7 +16,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mRootView = inflater.inflate(layout(), null)
-        onViewCreated()
+        onViewCreated(savedInstanceState)
         return mRootView
     }
 
@@ -26,5 +26,5 @@ abstract class BaseFragment : Fragment() {
      */
     abstract fun layout(): Int
 
-    abstract fun onViewCreated()
+    abstract fun onViewCreated(savedInstanceState: Bundle?)
 }
